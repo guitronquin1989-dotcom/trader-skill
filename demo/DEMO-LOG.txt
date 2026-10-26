@@ -1,0 +1,305 @@
+################################################################################
+# DEMO trader-skill - rodada em 2026-10-26T09:39:32Z (UTC)
+# Skills usadas: /home/user/.claude/skills (copia instalada em ~/.claude/skills/)
+# Python: Python 3.11.2 | Sem pip install | Paper trading = true
+# NENHUMA ordem real e enviada. size/check/ticket so escrevem arquivos locais.
+################################################################################
+
+================ [1/7] trader-copycat (offline: find) ================
+0001067983  Berkshire Hathaway Inc  (Warren Buffett (Chairman Emeritus since 2026-09-18) and Greg Abel (CEO since 2026-01-01))
+0001336528  Pershing Square Capital Management, L.P.  (Bill Ackman)
+(targets.json ja gerado a partir do 13F real da Berkshire Q2 2026:)
+BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)
+  AAPL    30.67%  (22.04% do 13F)  Apple
+  AXP     23.85%  (17.14% do 13F)  American Express
+  GOOGL   17.56%  (12.62% do 13F)  Alphabet
+  KO      15.11%  (10.86% do 13F)  Coca Cola
+  BAC     12.80%  (9.20% do 13F)  Bank of America
+
+================ [2/7] trader-budget - US$ 5.000, buffer 10%, teto 25% ================
+Copying: BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)
+Budget $5,000, cash buffer 10% = $500, investing $4,500, cap 25% = $1,250 per stock
+
+ticker  name                     weight     dollars      price     shares  note
+AAPL    Apple                    30.67%      $1,250    $341.27     3.6628  capped at 25%
+AXP     American Express         23.85%      $1,119    $309.84     3.6115
+GOOGL   Alphabet                 17.56%        $823    $353.78     2.3263
+KO      Coca Cola                15.11%        $708     $90.11     7.8571
+BAC     Bank of America          12.80%        $600     $53.96    11.1193
+        invested                             $4,500
+        cash buffer                            $500
+        left idle                                $0
+
+Proposed orders (place_stock_order arguments, nothing has been placed):
+  buy AAPL notional "1250", market, day
+  buy AXP notional "1119", market, day
+  buy GOOGL notional "823", market, day
+  buy KO notional "708", market, day
+  buy BAC notional "600", market, day
+
+Next: trader-risk checks every order, then trader-broker asks you yes or no for each one.
+Education and tooling, not financial advice.
+Wrote 5 proposed orders to trader/orders.json
+--- trader/orders.json ---
+{
+  "created_by": "trader-budget",
+  "created_at": "2026-10-26T09:39:32",
+  "status": "proposed",
+  "paper": true,
+  "note": "Proposals only. Nothing is placed until trader-risk passes each order and you say yes to it in the chat.",
+  "source": "BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)",
+  "orders": [
+    {
+      "symbol": "AAPL",
+      "side": "buy",
+      "notional": "1250",
+      "type": "market",
+      "time_in_force": "day",
+      "why": "30.67% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200); capped at 25% of the $5,000 budget"
+    },
+    {
+      "symbol": "AXP",
+      "side": "buy",
+      "notional": "1119",
+      "type": "market",
+      "time_in_force": "day",
+      "why": "23.85% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)"
+    },
+    {
+      "symbol": "GOOGL",
+      "side": "buy",
+      "notional": "823",
+      "type": "market",
+      "time_in_force": "day",
+      "why": "17.56% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)"
+    },
+    {
+      "symbol": "KO",
+      "side": "buy",
+      "notional": "708",
+      "type": "market",
+      "time_in_force": "day",
+      "why": "15.11% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)"
+    },
+    {
+      "symbol": "BAC",
+      "side": "buy",
+      "notional": "600",
+      "type": "market",
+      "time_in_force": "day",
+      "why": "12.80% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)"
+    }
+  ]
+}
+
+================ [3/7] trader-risk - PASS / BLOCK ================
+PASS  #1 buy AAPL $1,250
+PASS  #2 buy AXP $1,119
+PASS  #3 buy GOOGL $823
+PASS  #4 buy KO $708
+PASS  #5 buy BAC $600
+
+5 passed, 0 blocked. Cash after the passed orders: $500 (paper account).
+Every order passed. trader-broker still asks you yes or no for each one.
+Education and tooling, not financial advice.
+
+================ [4/7] trader-broker - tickets (NAO envia ordem) ================
+ORDER 1 of 5, PAPER account, Alpaca
+  BUY $1,250 of AAPL, market order, good for today
+  why: 30.67% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200); capped at 25% of the $5,000 budget
+  READY: trader-risk PASS, waiting for your yes
+  Claude will call place_stock_order with exactly:
+    {
+      "symbol": "AAPL",
+      "side": "buy",
+      "notional": "1250",
+      "type": "market",
+      "time_in_force": "day"
+    }
+  Reply "yes" to place this one order, or "no" to skip it.
+  Claude's own card then asks again: Allow once places it, Deny stops it.
+
+ORDER 2 of 5, PAPER account, Alpaca
+  BUY $1,119 of AXP, market order, good for today
+  why: 23.85% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)
+  READY: trader-risk PASS, waiting for your yes
+  Claude will call place_stock_order with exactly:
+    {
+      "symbol": "AXP",
+      "side": "buy",
+      "notional": "1119",
+      "type": "market",
+      "time_in_force": "day"
+    }
+  Reply "yes" to place this one order, or "no" to skip it.
+  Claude's own card then asks again: Allow once places it, Deny stops it.
+
+ORDER 3 of 5, PAPER account, Alpaca
+  BUY $823 of GOOGL, market order, good for today
+  why: 17.56% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)
+  READY: trader-risk PASS, waiting for your yes
+  Claude will call place_stock_order with exactly:
+    {
+      "symbol": "GOOGL",
+      "side": "buy",
+      "notional": "823",
+      "type": "market",
+      "time_in_force": "day"
+    }
+  Reply "yes" to place this one order, or "no" to skip it.
+  Claude's own card then asks again: Allow once places it, Deny stops it.
+
+ORDER 4 of 5, PAPER account, Alpaca
+  BUY $708 of KO, market order, good for today
+  why: 15.11% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)
+  READY: trader-risk PASS, waiting for your yes
+  Claude will call place_stock_order with exactly:
+    {
+      "symbol": "KO",
+      "side": "buy",
+      "notional": "708",
+      "type": "market",
+      "time_in_force": "day"
+    }
+  Reply "yes" to place this one order, or "no" to skip it.
+  Claude's own card then asks again: Allow once places it, Deny stops it.
+
+ORDER 5 of 5, PAPER account, Alpaca
+  BUY $600 of BAC, market order, good for today
+  why: 12.80% of the stock sleeve, copying BERKSHIRE HATHAWAY INC 13F-HR, quarter ending 2026-06-30, filed 2026-08-14 (accession 0001193125-26-352200)
+  READY: trader-risk PASS, waiting for your yes
+  Claude will call place_stock_order with exactly:
+    {
+      "symbol": "BAC",
+      "side": "buy",
+      "notional": "600",
+      "type": "market",
+      "time_in_force": "day"
+    }
+  Reply "yes" to place this one order, or "no" to skip it.
+  Claude's own card then asks again: Allow once places it, Deny stops it.
+
+One order at a time: a yes covers one ticket, never the batch. Education and tooling, not financial advice.
+
+================ [5/7] trader-alerts - relogio NYSE ================
+New York 2026-10-26 05:39 (Monday): NYSE closed, before the open.
+Today's session: 09:30 to 16:00.
+Next open: 2026-10-26 09:30 New York.
+(list de alertas no Apendice, com --rules)
+
+================ [6/7] trader-screener - regras do exemplo ================
+Growing, profitable, not priced for perfection: 2 of 5 companies pass.
+Prices as of 2026-10-13T20:00:01Z.
+
+ 1. PASS GOOGL  Alphabet Inc.  score 0.75
+        ok    revenue_growth_yoy 24.2 >= 10
+        ok    operating_margin 34 >= 25
+        ok    eps_ttm 19.91 > 0
+        ok    pe 17.8 <= 35
+ 2. PASS KO     COCA COLA CO  score 0.25
+        ok    revenue_growth_yoy 12.1 >= 10
+        ok    operating_margin 35 >= 25
+        ok    eps_ttm 3.18 > 0
+        ok    pe 28.3 <= 35
+
+    FAIL AAPL   pe 39.2, needs <= 35
+    FAIL BAC    operating_margin is missing
+    FAIL AXP    revenue_growth_yoy 8.6, needs >= 10; operating_margin is missing
+
+A screen is a filter on reported numbers, not a recommendation. Read the filings (/trader-analyst) before anything goes near /trader-budget.
+
+================ [7/7] trader-tax + trader-rebalance ================
+ticker      shares         cost        value         gain   gain %
+AAPL        3.6628    $1,250.00    $1,250.00        $0.00    0.00%
+AXP         3.6115    $1,119.00    $1,118.99       -$0.01    0.00%
+BAC        11.1193      $600.00      $600.00        $0.00    0.00%
+GOOGL       2.3263      $823.00      $823.00        $0.00    0.00%
+KO          7.8571      $708.00      $708.00        $0.00    0.00%
+
+Realized in 2026 (recorded sales): $0.00 short term, $0.00 long term, $0.00 disallowed by wash sales.
+Not tax advice: arithmetic on your lots. Wash-sale rules also count buys in your IRA, your spouse's accounts and other brokers, which this tool cannot see. Check with a tax professional before you act.
+--- rebalance (carteira do exemplo tax, banda 5pp) ---
+Account $4,999.99 (cash $500, buffer $500, cap $1,250 per stock), band 5 points
+
+ticker      shares      price       value     now %  target %    drift  action
+AAPL        3.6628    $341.27      $1,250    25.00%    25.00%    +0.00  hold
+AXP         3.6115    $309.84   $1,118.99    22.38%    22.36%    +0.02  hold
+GOOGL       2.3263    $353.78        $823    16.46%    16.47%    -0.01  hold
+KO          7.8571     $90.11        $708    14.16%    14.17%    -0.01  hold
+BAC        11.1193     $53.96        $600    12.00%    12.00%    +0.00  hold
+
+Nothing is outside the band. No trades.
+
+Selling can realize a taxable gain: check trader-tax (lots.py sell) first. Then trader-risk checks every order and trader-broker asks you yes or no for each one.
+Education and tooling, not financial advice.
+
+================ FIM DA DEMO ================
+
+================ APENDICE - analyst / pelosi / news (offline, fixtures reais) ================
+--- trader-analyst: AAPL (SEC XBRL, fixture) ---
+Apple Inc. (AAPL), CIK 0000320193. US$ millions except EPS. Source: SEC XBRL company facts.
+
+quarter end fiscal       revenue  rev yoy   gross    oper     net    net inc  EPS dil EPS yoy
+2026-06-27  Q3 2026      109,417   +16.4%   50.1%   32.6%   27.2%     29,789     2.02  +28.7%
+2026-03-28  Q2 2026      111,184   +16.6%   49.3%   32.3%   26.6%     29,578     2.01  +21.8%
+2025-12-27  Q1 2026      143,756   +15.7%   48.2%   35.4%   29.3%     42,097     2.84  +18.3%
+2025-09-27  Q4 2025      102,466    +7.9%   47.2%   31.6%   26.8%     27,466     1.84  +89.7%  derived
+2025-06-28  Q3 2025       94,036    +9.6%   46.5%   30.0%   24.9%     23,434     1.57  +12.1%
+2025-03-29  Q2 2025       95,359    +5.1%   47.1%   31.0%   26.0%     24,780     1.65   +7.8%
+
+Last 4 quarters: revenue $466,823M, net income $128,930M, diluted EPS $8.71.
+
+What changed:
+  - Quarter ending 2026-06-27: revenue $109.42B (+16.4% vs a year earlier), net income $29.79B (+27.1%), diluted EPS $2.02 (+28.7%).
+  - Gross margin 50.1% (+0.8 points vs the quarter before).
+  - Operating margin 32.6% (+0.3 points vs the quarter before).
+  - Net margin 27.2% (+0.6 points vs the quarter before).
+  - Revenue -1.6% vs the quarter before (many businesses are seasonal: compare with a year earlier first).
+
+Latest 10-Q: period 2026-06-27, filed 2026-07-31  https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm
+Latest earnings 8-K (item 2.02): filed 2026-07-30  https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm
+
+Derived quarters are the 10-K year minus the three 10-Qs; derived EPS is approximate.
+
+
+--- trader-pelosi: parse de um PTR real (texto) ---
+Hon. Nancy Pelosi (CA11), Member. PTR 20035143, filed 2026-08-21.
+  - spouse purchase, Bloom Energy Corporation Class A Common Stock (BE): 10,000 shares, $1,000,001 - $5,000,000, traded 2026-07-24, disclosed 28 days later
+  - spouse purchase, Bloom Energy Corporation Class A Common Stock (BE): 100 call options, $100 strike, expires 2027-06-17, $1,000,001 - $5,000,000, traded 2026-07-24, disclosed 28 days later
+  - spouse purchase, Bloom Energy Corporation Class A Common Stock (BE): 5,000 shares, $500,001 - $1,000,000, traded 2026-07-28, disclosed 24 days later
+  - spouse purchase, Bloom Energy Corporation Class A Common Stock (BE): 100 call options, $100 strike, expires 2027-06-17, $500,001 - $1,000,000, traded 2026-07-28, disclosed 24 days later
+  - spouse purchase, Intel Corporation - Common Stock (INTC): 50 call options, $50 strike, expires 2027-06-17, $250,001 - $500,000, traded 2026-07-24, disclosed 28 days later
+  - spouse purchase, Intel Corporation - Common Stock (INTC): 10,000 shares, $500,001 - $1,000,000, traded 2026-07-24, disclosed 28 days later
+  - spouse purchase, REOF XXV, LLC, $500,001 - $1,000,000, traded 2026-07-27, disclosed 25 days later
+      Additional investment in LLC which is acquiring and restoring a luxury hotel property in San Francisco, CA.
+Public disclosure under the STOCK Act, filed up to 45 days after the trade. Amounts are ranges. Not inside information.
+
+--- trader-news: offline ---
+  2026-10-13 22:21 UTC  AAPL        Yahoo Finance Apple’s $299 HomeView Is The Tech Giant’s Next Bet on the Smart Home
+      https://finance.yahoo.com/video/apple-299-homeview-tech-giant-222100009.html?.tsrc=rss
+  2026-10-13 20:37 UTC  AAPL        Yahoo Finance Apple Takes on Amazon With New Smart Home Gadgets. It Still Isn’t Worth $5 Trillion.
+      https://finance.yahoo.com/m/44e3206a-a255-3b83-94a0-ab1efc4b012f/apple-takes-on-amazon-with.html?.tsrc=rss
+  2026-10-13 20:36 UTC  AAPL        Yahoo Finance Judge orders OpenAI to turn over hiring records in Apple trade secrets case
+      tags: legal  https://finance.yahoo.com/technology/ai/articles/judge-orders-openai-turn-over-203644748.html?.tsrc=rss
+  2026-10-13 20:24 UTC  AAPL        Yahoo Finance Apple Introduces HomeView Smart Home Hub, Other Gadgets
+      https://finance.yahoo.com/m/24497fee-3636-3690-9127-568bddae03f0/apple-introduces-homeview.html?.tsrc=rss
+  2026-10-13 20:02 UTC  KO          Yahoo Finance Coca-Cola or Chevron: The One Dividend Stock I’d Hold for the Next 20 Years
+      tags: capital  https://www.tikr.com/blog/coca-cola-or-chevron-the-one-dividend-stock-id-hold-for-the-next-20-years?ref=yahoofinance&.tsrc=rss
+  2026-10-13 19:50 UTC  AAPL        Yahoo Finance Apple Hits Fresh All-Time High
+      tags: people  https://app.moby.co/home/news/news-apple-hits-fresh-all-time-high?utm_source=yahoo_finance&utm_medium=rss&.tsrc=rss
+  2026-10-13 19:46 UTC  AAPL        Yahoo Finance Apple may have a way to dominate the smart home space
+      https://finance.yahoo.com/video/apple-may-have-a-way-to-dominate-the-smart-home-space-194652300.html?.tsrc=rss
+  2026-10-13 18:45 UTC  KO          Yahoo Finance Coca-Cola Has Raised Dividends for 63 Years. Can It Make It Another Decade?
+      tags: capital  https://247wallst.com/investing/2026/10/13/coca-cola-has-raised-dividends-for-63-years-can-it-make-it-another-decade/?.tsrc=rss
+  2026-10-13 15:37 UTC  KO          Yahoo Finance PepsiCo Trades Near 52-Week Low: Should You Buy Now or Wait?
+      tags: earnings  https://finance.yahoo.com/markets/stocks/articles/pepsico-trades-near-52-week-153700765.html?.tsrc=rss
+  2026-10-13 12:40 UTC  KO          Yahoo Finance Is Coca-Cola (KO) Stock Outpacing Its Consumer Staples Peers This Year?
+      https://finance.yahoo.com/markets/stocks/articles/coca-cola-ko-stock-outpacing-124002572.html?.tsrc=rss
+Checked 2026-10-14 12:00 UTC. Headlines are leads, not facts; open the story before acting. Not financial advice.
+
+--- trader-alerts: list (argumento correto --rules) ---
+opening-bell             {"type": "opening_bell"}
+aapl-above-350           {"symbol": "AAPL", "type": "above", "price": 350}
+bac-stop-50              {"symbol": "BAC", "type": "stop", "price": 50, "note": "my stop"}
+ko-move-3                {"symbol": "KO", "type": "pct_move", "pct": 3}
+googl-dip-320            {"symbol": "GOOGL", "type": "below", "price": 320, "rearm": true}

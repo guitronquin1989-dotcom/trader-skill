@@ -38,7 +38,10 @@ class Repo(unittest.TestCase):
 
     def test_root_matches_the_reel(self):
         root = sorted(d for d in os.listdir(ROOT) if not d.startswith(".git"))
-        self.assertEqual(root, sorted([".claude-plugin", "LICENSE", "README.md", "tests"] + SKILLS))
+        # .gitignore is filtered out above (starts with ".git"); the install
+        # scripts, the PT install guide and the offline demo are intentional
+        extras = ["INSTALACAO.md", "demo", "install.bat", "install.ps1", "install.sh"]
+        self.assertEqual(root, sorted([".claude-plugin", "LICENSE", "README.md", "tests"] + SKILLS + extras))
 
     def test_frontmatter_name_and_description(self):
         for s in SKILLS:
