@@ -10,6 +10,23 @@ Verificado de verdade em 2026-10-26 com o OpenCode **1.19.4**: o comando
 nenhum erro de leitura. Documentação oficial das skills do OpenCode:
 https://opencode.ai/docs/skills/
 
+## Instalação guiada no Mac (recomendada)
+
+```bash
+git clone -b arena/23cdc45d-trader-skill https://github.com/guitronquin1989-dotcom/trader-skill.git ~/trader-skill
+cd ~/trader-skill
+bash instalar-opencode-mac.sh --checar
+```
+
+O instalador pergunta antes de instalar o OpenCode, mantém **uma cópia
+só** das skills, cria `~/trader-projeto` com config em paper,
+`AGENTS.md` e permissão local para as skills, e termina conferindo
+`opencode debug skill` (tem que enxergar 11). Ele não faz login em
+provedor nem pede chave: depois rode `opencode auth login` (ou
+`/connect` dentro do OpenCode) e abra o `opencode` no projeto.
+
+As seções abaixo são o caminho manual, equivalentes.
+
 ## Instalar o OpenCode no Mac (se ainda não tem)
 
 ```bash
@@ -162,10 +179,13 @@ Testado no sandbox em 2026-10-26: OpenCode 1.19.4 instalado via npm
 descobre e lê as 11 skills de `~/.claude/skills/` (`debug skill` sem
 erros), nomes e descrições passam nas regras do OpenCode, o
 `./install.sh --opencode` instala na pasta nativa com os caminhos
-ajustados, e o pipeline em Python (budget, risk, broker) é o mesmo já
-provado na demo. A conversa com um modelo dentro do OpenCode (quem de
-fato carrega a skill e roda os comandos) só acontece na sua máquina,
-com o seu provedor conectado.
+ajustados, e o `instalar-opencode-mac.sh` passou em HOMEs limpas nos
+modos nativo e compatível, criando projeto e enxergando 11 de 11. O
+pipeline em Python (budget, risk, broker) é o mesmo já provado na
+demo. A conversa com um modelo dentro do OpenCode (quem de fato
+carrega a skill e roda os comandos) só acontece na sua máquina, com
+o seu provedor conectado: no sandbox do Arena as chamadas de modelo
+ficam sem rede e expiram.
 
 Isto não é consultoria financeira. Fique no paper. Guia geral:
 `INSTALACAO.md`; no Mac: `COMECE-AQUI-MAC.md`.

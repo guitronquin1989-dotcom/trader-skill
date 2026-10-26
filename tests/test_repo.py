@@ -42,8 +42,8 @@ class Repo(unittest.TestCase):
         # scripts, the PT install guide and the offline demo are intentional
         extras = ["COMECE-AQUI-MAC.md", "INSTALACAO.md", "OPENCODE.md", "RODAR-LOCAL.md",
                   "TERMINAL.md", "checar-ambiente.sh", "demo", "instalar-mac.command",
-                  "instalar-terminal-mac.sh", "install.bat", "install.ps1", "install.sh",
-                  "trader.sh"]
+                  "instalar-opencode-mac.sh", "instalar-terminal-mac.sh", "install.bat",
+                  "install.ps1", "install.sh", "trader.sh"]
         self.assertEqual(root, sorted([".claude-plugin", "LICENSE", "README.md", "tests"] + SKILLS + extras))
 
     def test_frontmatter_name_and_description(self):
