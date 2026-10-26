@@ -116,6 +116,18 @@ if [ "$RUN_DEMO" -eq 1 ]; then
   echo "Demo escrita em: $SCRIPT_DIR/demo/trader/ (orders.json etc.)"
 fi
 
+# --- 6) Claude Code presente? (avisa, nunca bloqueia) -------------------------
+echo
+if command -v claude >/dev/null 2>&1; then
+  echo "Claude Code encontrado: $(claude --version 2>/dev/null | head -n 1)"
+else
+  echo "Aviso: Claude Code (comando 'claude') nao encontrado nesta maquina."
+  echo "As skills estao instaladas; para usa-las, instale o Claude Code:"
+  echo "  Mac/Linux: curl -fsSL https://claude.ai/install.sh | bash"
+  echo "  Mac com Homebrew: brew install --cask claude-code"
+  echo "Depois feche/abra o Terminal e rode 'claude' uma vez para entrar na conta."
+fi
+
 cat <<EOF
 
 ✅ PRONTO. Próximos passos:
@@ -129,6 +141,6 @@ cat <<EOF
    Depois:                  /trader-budget (seu orçamento) -> /trader-risk -> /trader-broker
    NENHUMA ordem é enviada sem você digitar yes para aquela ordem exata.
 
-Guia completo em português: INSTALACAO.md
+No Mac, comece por: COMECE-AQUI-MAC.md | Guia completo: INSTALACAO.md
 Desinstalar: apague as pastas trader-* de $DEST
 EOF
