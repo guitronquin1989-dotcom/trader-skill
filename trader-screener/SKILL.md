@@ -20,6 +20,8 @@ pass and every fail comes with the number and the threshold.
 
 Tool in this folder (standard library Python, no network):
 
+`${CLAUDE_SKILL_DIR}` below is this skill's folder (where this SKILL.md lives).
+
 ```bash
 python3 "${CLAUDE_SKILL_DIR}/screen.py" --help
 ```

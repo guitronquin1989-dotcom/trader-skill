@@ -20,6 +20,8 @@ first for each of your stocks and tells you only what is new.
 
 Tool in this folder (standard library Python, no keys):
 
+`${CLAUDE_SKILL_DIR}` below is this skill's folder (where this SKILL.md lives).
+
 ```bash
 python3 "${CLAUDE_SKILL_DIR}/news.py" --help
 ```

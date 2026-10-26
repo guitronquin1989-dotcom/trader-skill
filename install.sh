@@ -4,6 +4,8 @@
 # Uso:
 #   ./install.sh            instala as 11 skills em ~/.claude/skills/  (global, recomendado)
 #   ./install.sh --project  instala em ./.claude/skills/               (só neste projeto)
+#   ./install.sh --opencode instala para o OpenCode, em ~/.config/opencode/skills/
+#                           (com --project: ./.opencode/skills/; ajusta ${CLAUDE_SKILL_DIR})
 #   ./install.sh --demo     depois de instalar, roda a demo offline (Berkshire top 5, US$ 5.000)
 #   ./install.sh --no-test  pula a suíte de testes
 #
@@ -13,27 +15,36 @@ set -euo pipefail
 
 REPO_URL="${TRADER_SKILL_REPO:-https://github.com/Jakeschincariol/trader-skill.git}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST="${HOME}/.claude/skills"
+TARGET="claude"
+SCOPE="global"
 RUN_DEMO=0
 RUN_TESTS=1
 
 for arg in "$@"; do
   case "$arg" in
-    --project) DEST="${SCRIPT_DIR}/.claude/skills" ;;
-    --global)  DEST="${HOME}/.claude/skills" ;;
+    --project)  SCOPE="project" ;;
+    --global)   SCOPE="global" ;;
+    --opencode) TARGET="opencode" ;;
+    --claude)   TARGET="claude" ;;
     --demo)    RUN_DEMO=1 ;;
     --no-test) RUN_TESTS=0 ;;
     -h|--help)
-      sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+      sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
-    *) echo "Opção desconhecida: $arg (use --project, --demo ou --no-test)" >&2; exit 2 ;;
+    *) echo "Opção desconhecida: $arg (use --project, --opencode, --demo ou --no-test)" >&2; exit 2 ;;
   esac
 done
-# CLAUDE_SKILLS_DIR tem prioridade, se definida
-DEST="${CLAUDE_SKILLS_DIR:-$DEST}"
+# Destino conforme cliente e escopo; a variavel de ambiente tem prioridade
+if [ "$TARGET" = "opencode" ]; then
+  if [ "$SCOPE" = "project" ]; then DEST="${SCRIPT_DIR}/.opencode/skills"; else DEST="${HOME}/.config/opencode/skills"; fi
+  DEST="${OPENCODE_SKILLS_DIR:-$DEST}"
+else
+  if [ "$SCOPE" = "project" ]; then DEST="${SCRIPT_DIR}/.claude/skills"; else DEST="${HOME}/.claude/skills"; fi
+  DEST="${CLAUDE_SKILLS_DIR:-$DEST}"
+fi
 
-echo "== trader-skill - instalador (Mac/Linux) =="
+echo "== trader-skill - instalador (Mac/Linux) para $TARGET =="
 
 # --- 1) Python 3.8+ ---------------------------------------------------------
 PY=""
@@ -65,6 +76,12 @@ fi
 echo "Fonte: $SRC"
 
 # --- 3) Copia as 11 skills (com backup do que já existia) -------------------
+# O OpenCode le ~/.claude/skills E ~/.config/opencode/skills e deduplica pelo
+# nome: ter as duas copias pode fazer ele carregar a outra. Avise, nao bloqueie.
+if [ "$TARGET" = "opencode" ] && [ -f "${HOME}/.claude/skills/trader-copycat/SKILL.md" ] && [ "$DEST" != "${HOME}/.claude/skills" ]; then
+  echo "Aviso: ja existe uma copia em ~/.claude/skills/. O OpenCode ve as duas e"
+  echo "       pode preferir a antiga. O ideal e manter UMA copia so (veja OPENCODE.md)."
+fi
 mkdir -p "$DEST"
 COUNT=0
 for d in "$SRC"/trader-*/; do
@@ -80,6 +97,16 @@ for d in "$SRC"/trader-*/; do
   cp -r "$d" "$DEST/$name"
   # nunca copia lixo de compilação
   find "$DEST/$name" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null || true
+  # OpenCode nao substitui ${CLAUDE_SKILL_DIR} (quem fazia era o Claude Code):
+  # nas copias do OpenCode, troca pelo caminho absoluto desta skill.
+  if [ "$TARGET" = "opencode" ]; then
+    SKILL_FILE="$DEST/$name/SKILL.md" SKILL_DIR_ABS="$DEST/$name" "$PY" - <<'PYEOF'
+import os
+p, destino = os.environ["SKILL_FILE"], os.environ["SKILL_DIR_ABS"]
+texto = open(p, encoding="utf-8").read()
+open(p, "w", encoding="utf-8").write(texto.replace("${CLAUDE_SKILL_DIR}", destino))
+PYEOF
+  fi
   echo "  instalada: /$name"
   COUNT=$((COUNT + 1))
 done
@@ -116,9 +143,20 @@ if [ "$RUN_DEMO" -eq 1 ]; then
   echo "Demo escrita em: $SCRIPT_DIR/demo/trader/ (orders.json etc.)"
 fi
 
-# --- 6) Claude Code presente? (avisa, nunca bloqueia) -------------------------
+# --- 6) Cliente presente? (avisa, nunca bloqueia) ------------------------------
 echo
-if command -v claude >/dev/null 2>&1; then
+if [ "$TARGET" = "opencode" ]; then
+  if command -v opencode >/dev/null 2>&1; then
+    echo "OpenCode encontrado: $(opencode --version 2>/dev/null | head -n 1)"
+    echo "Skills trader-* vistas pelo OpenCode: $(opencode debug skill 2>/dev/null | grep -c '"name": "trader-' || true)"
+  else
+    echo "Aviso: OpenCode (comando 'opencode') nao encontrado nesta maquina."
+    echo "As skills estao instaladas; para usa-las, instale o OpenCode:"
+    echo "  Mac/Linux: curl -fsSL https://opencode.ai/install | bash"
+    echo "  Mac com Homebrew: brew install anomalyco/tap/opencode"
+    echo "Depois rode 'opencode' e conecte um provedor/modelo."
+  fi
+elif command -v claude >/dev/null 2>&1; then
   echo "Claude Code encontrado: $(claude --version 2>/dev/null | head -n 1)"
 else
   echo "Aviso: Claude Code (comando 'claude') nao encontrado nesta maquina."
@@ -128,6 +166,26 @@ else
   echo "Depois feche/abra o Terminal e rode 'claude' uma vez para entrar na conta."
 fi
 
+if [ "$TARGET" = "opencode" ]; then
+cat <<EOF
+
+✅ PRONTO. Próximos passos:
+1. Feche e abra de novo o OpenCode (config e skills sao lidos na inicializacao).
+2. No projeto onde você quer investir, crie trader/config.json a partir de
+   trader-budget/config.example.json e troque:
+     "sec_user_agent": "Seu Nome voce@exemplo.com"   <- a SEC exige nome+email
+   (ou: export SEC_USER_AGENT="Seu Nome voce@exemplo.com")
+   Mantenha "paper": true.
+3. No OpenCode (cd no seu projeto, depois: opencode), peca em linguagem natural:
+     Use a skill trader-copycat para copiar o top 5 da Berkshire
+   Depois peca trader-budget, trader-risk e trader-broker, nessa ordem.
+   (Skill no OpenCode nao e comando de barra: quem carrega e o agente.)
+   NENHUMA ordem é enviada sem você digitar yes para aquela ordem exata.
+
+Guia do OpenCode: OPENCODE.md | No Mac: COMECE-AQUI-MAC.md
+Desinstalar: apague as pastas trader-* de $DEST
+EOF
+else
 cat <<EOF
 
 ✅ PRONTO. Próximos passos:
@@ -144,3 +202,4 @@ cat <<EOF
 No Mac, comece por: COMECE-AQUI-MAC.md | Guia completo: INSTALACAO.md
 Desinstalar: apague as pastas trader-* de $DEST
 EOF
+fi

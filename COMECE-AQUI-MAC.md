@@ -174,3 +174,6 @@ python3 ~/.claude/skills/trader-copycat/edgar13f.py find buffett
 Guia completo (todas as plataformas, corretora, segurança):
 `INSTALACAO.md`. Isto não é consultoria financeira: é uma ferramenta
 que lê dados públicos e faz contas. Fique no paper até dominar o fluxo.
+
+Prefere o OpenCode ao Claude Code neste Mac? Funciona também: veja
+`OPENCODE.md` (instalação com `./install.sh --opencode`).

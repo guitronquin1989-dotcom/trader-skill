@@ -21,6 +21,8 @@ with the SEC, lines them up quarter by quarter, and says plainly what changed.
 
 Tool in this folder (standard library Python, no keys):
 
+`${CLAUDE_SKILL_DIR}` below is this skill's folder (where this SKILL.md lives).
+
 ```bash
 python3 "${CLAUDE_SKILL_DIR}/facts.py" --help
 ```

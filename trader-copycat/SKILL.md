@@ -23,6 +23,8 @@ weights for your own account.
 
 Tool in this folder (standard library Python, no keys):
 
+`${CLAUDE_SKILL_DIR}` below is this skill's folder (where this SKILL.md lives).
+
 ```bash
 python3 "${CLAUDE_SKILL_DIR}/edgar13f.py" --help
 ```
