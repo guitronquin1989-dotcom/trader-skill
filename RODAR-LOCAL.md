@@ -20,8 +20,9 @@ país de residência fiscal).
 
 Siga `COMECE-AQUI-MAC.md` (Claude Code) ou `OPENCODE.md` (OpenCode).
 Sem agente nenhum também dá: `TERMINAL.md` roda tudo pelo terminal
-com o `trader.sh`, e a "corretora" da Fase 2 vira você digitando os
-tickets no app dela (o resto das fases não muda).
+com o `trader.sh` (instalador próprio: `instalar-terminal-mac.sh`),
+e a "corretora" da Fase 2 vira você digitando os tickets no app
+dela (o resto das fases não muda).
 Para a fase de corretora, o desenho de segurança deste pacote foi
 feito para o caminho Claude (três portões: PASS do risk, seu `yes` no
 chat e o cartão Allow once/Deny com a ferramenta em "Needs approval").

@@ -11,28 +11,35 @@ Para não decorar 11 caminhos de script, este repo traz o `trader.sh`,
 um atalho de terminal em português. Não precisa instalar skill em
 lugar nenhum: o próprio clone serve.
 
-## Preparação (uma vez)
+## Instalação guiada no Mac (uma vez)
 
 ```bash
-# 1. o codigo
-git clone https://github.com/guitronquin1989-dotcom/trader-skill.git ~/trader-skill
-cd ~/trader-skill && git checkout arena/23cdc45d-trader-skill
+# 1. baixe o codigo
+git clone -b arena/23cdc45d-trader-skill https://github.com/guitronquin1989-dotcom/trader-skill.git ~/trader-skill
+cd ~/trader-skill
 
-# 2. seu projeto (onde a pasta trader/ vai morar)
-mkdir -p ~/trader-projeto/trader
-cp ~/trader-skill/trader-budget/config.example.json ~/trader-projeto/trader/config.json
-open -e ~/trader-projeto/trader/config.json
+# 2. instale SOMENTE o modo Terminal
+bash instalar-terminal-mac.sh --checar
 ```
 
-No editor: seu `budget`, `"paper": true` e
-`"sec_user_agent": "Seu Nome voce@exemplo.com"` com dados reais
-(exigência da SEC para baixar dados). Confira o ambiente:
+O instalador pergunta seu nome, email e orçamento de teste, cria
+`~/trader-projeto/trader/config.json` sempre com `"paper": true`,
+cria o comando global `trader` e testa as fontes ao vivo. Ele não
+instala nem copia nada para Claude ou OpenCode.
+
+Feche e abra o Terminal ao final. Depois:
 
 ```bash
 cd ~/trader-projeto
-bash ~/trader-skill/checar-ambiente.sh --full
-bash ~/trader-skill/trader.sh ajuda
+trader ajuda
+trader relogio
+trader manha
 ```
+
+Se o primeiro `git` ou `python3` abrir a janela da Apple oferecendo
+as Command Line Tools, aceite, espere a instalação terminar e rode o
+comando de novo. Sem o atalho global, o caminho `bash ~/trader-skill/trader.sh ...`
+continua funcionando.
 
 Requer só Python 3.8+ (`python3 --version`). Nada de pip install.
 
@@ -62,10 +69,10 @@ da ferramenta original; e o caminho cru continua valendo, ex.:
 
 ```bash
 cd ~/trader-projeto
-bash ~/trader-skill/trader.sh manha
+trader manha
 # leia os links que importam (8-K manda mais que manchete)
 
-bash ~/trader-skill/trader.sh fluxo 5000
+trader fluxo 5000
 # confira cada PASS/BLOCK com calma; BLOCK nao se discute, se corrige
 ```
 
