@@ -177,3 +177,7 @@ que lê dados públicos e faz contas. Fique no paper até dominar o fluxo.
 
 Prefere o OpenCode ao Claude Code neste Mac? Funciona também: veja
 `OPENCODE.md` (instalação com `./install.sh --opencode`).
+
+Próximo nível (dados ao vivo todo dia, paper na corretora e, só
+depois de um checklist, dinheiro real): `RODAR-LOCAL.md`, com o
+verificador `bash ~/trader-skill/checar-ambiente.sh`.
